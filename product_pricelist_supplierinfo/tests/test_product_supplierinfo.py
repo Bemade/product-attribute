@@ -11,7 +11,10 @@ from odoo.tests import tagged
 from odoo.addons.base.tests.common import BaseCommon
 
 
-@tagged("product_supplier_info")
+# post_install so the full registry is loaded before setUpClass creates a
+# res.partner: at at_install time a DB that already has account's NOT NULL
+# autopost_bills column but not yet its Python default raises NotNullViolation.
+@tagged("product_supplier_info", "post_install", "-at_install")
 class TestProductSupplierinfo(BaseCommon):
     @classmethod
     def setUpClass(cls):
